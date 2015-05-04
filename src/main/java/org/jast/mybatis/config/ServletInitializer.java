@@ -1,0 +1,66 @@
+package org.jast.mybatis.config;
+
+//import org.apache.logging.log4j.web.Log4jServletContextListener;
+//import org.apache.logging.log4j.web.Log4jServletFilter;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.*;
+import java.util.EnumSet;
+
+/**
+ * Created by zhiwen on 15-4-8.
+ */
+public class ServletInitializer implements WebApplicationInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        WebApplicationContext context = getContext();
+        servletContext.addListener(new ContextLoaderListener(context));
+
+        //servletContext.setInitParameter("isLog4jAutoInitializationDisabled", "true");
+        //servletContext.setInitParameter("log4jContextName", "myApplication");
+        //servletContext.setInitParameter("log4jConfiguration", "classpath:log4jConfiguration.xml");
+        //配置Log4j2 http://logging.apache.org/log4j/2.x/manual/webapp.html
+
+        /**
+         <listener>
+         <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+         </listener>
+
+         <filter>
+         <filter-name>log4jServletFilter</filter-name>
+         <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+         </filter>
+         <filter-mapping>
+         <filter-name>log4jServletFilter</filter-name>
+         <url-pattern>/*</url-pattern>
+         <dispatcher>REQUEST</dispatcher>
+         <dispatcher>FORWARD</dispatcher>
+         <dispatcher>INCLUDE</dispatcher>
+         <dispatcher>ERROR</dispatcher>
+         <dispatcher>ASYNC</dispatcher> //Servlet 3.0 w/ disabled auto-initialization only; not supported in 2.5
+         </filter-mapping>
+         */
+        //servletContext.addListener(Log4jServletContextListener.class);
+        //FilterRegistration.Dynamic filterRegistration = servletContext.addFilter("log4jServletFilter", new Log4jServletFilter());
+        //filterRegistration.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ERROR), false, "log4jServletFilter");
+        //filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ERROR), false, "/*");
+        //filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE), false, "/");
+
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("*.do");
+    }
+
+    private AnnotationConfigWebApplicationContext getContext() {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.setConfigLocation("org.jast.mybatis.config");
+
+        //context.scan(ClassUtils.getPackageName(getClass()));
+        return context;
+    }
+}
