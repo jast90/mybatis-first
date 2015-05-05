@@ -28,6 +28,7 @@ public class ArticleSQLProvider {
     }
 
     public String findByArticle(final Article article){
+
         return new SQL(){
             {
                 SELECT("*");
@@ -36,11 +37,13 @@ public class ArticleSQLProvider {
                     WHERE("articleId = #{articleId}");
                 }
                 if (article.getTitle()!=null){
-                    WHERE("title like #{title}");
+                    WHERE("title like \"%\"#{title}\"%\"");
                 }
                 if(article.getContent()!=null){
-                    WHERE("content like #{content}");
+                    WHERE("content like \"%\"#{content}\"%\"");
+
                 }
+
             }
         }.toString();
     }
