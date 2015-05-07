@@ -39,7 +39,8 @@ public class AppConfig {
         DruidDataSource dataSource = new DruidDataSource();
         try {
             //基本属性url、user、password
-            dataSource.setUrl("jdbc:mysql://localhost:3306/mybatis_db");
+            //dataSource.setUrl("jdbc:mysql://localhost:3306/mybatis_db");
+            dataSource.setUrl("jdbc:mysql://localhost:3306/mybatis_db?useUnicode=true&characterEncoding=utf-8");
             dataSource.setUsername("root");
             dataSource.setPassword("zzwzzw");
 
