@@ -54,7 +54,7 @@
      *
      */
     $.fn.hello1 = function(){
-        alert("你好，jQuery对象方法！"+"您的内容是："+$element.html());
+        alert("你好，jQuery对象方法！");
     };
 
     /**
@@ -63,10 +63,7 @@
      * 所以可以通过this可以调用所有的jQuery方法。
      */
     $.fn.hello2 = function(){
-
         console.log(this);//这里指的是jQuery对象。
-
-
     };
 
     /**
@@ -98,11 +95,65 @@
     /**
      *  三、提供灵活的方法参数
      *  一个灵活的插件，应该可以让用户定义插件显示多种形态，
-     *  所以插件应该有自己相关的参数来描述插件的属性。
+     *  所以插件应该有自己相关的参数（参数列表或者是参数对象）来描述插件的属性。
      */
 
     /**
      * 1.参数对象
+     *  作为一种像像插件用户公开选项的方式，对象要比参数列表更加友好，
+     *  所有我们应该使用对象作为参数。所以就有了参数对象了。
+     */
+    $.fn.hello4 = function(options){
+      return this.each(function(){
+         var $element = $(this);
+          //然后就可以在逻辑中使用参数对象了
+      });
+    };
+
+    /**
+     * 2.默认参数
+     * 随着参数的增多，每次都要指定参数值，这样做是很不合理的。
+     * 那么一组合理的默认值就显得格外中重要了，他能够增强插件的易用性。
+     * 首相要理解$.extend()全局方法的用法，参考：http://www.css88.com/jqapi-1.9/jQuery.extend/
+     */
+    $.fn.hello5 = function(opts){
+        //默认参数对象
+        var defaults = {
+            obj1:"value1",
+            obj2:"value2"
+        }
+        //调用的时候就直接掉options，会合并deafaults 和opts，如果存在相同对象值取靠后的。
+        //所以可以达到覆盖默认参数的效果。
+        var options = $.extend(defaults,opts);
+    };
+
+    /**
+     * 3.回调函数
+     *  在默认参数对象中我们可以定义普通属性、数组、函数还可以是对象
+     *  当我们定义了函数的时候，结合$.extend(target，object)方法就可实现回调函数了。
+     *  因为自定义的函数回覆盖默认的函数，所以就形成了回调函数。
+     */
+    $.fn.helloCallBack = function(opts){
+        //默认参数对象
+        var defaults = {
+            obj1:"value1",
+            obj2:"value2",
+            sayHello:function(){
+                alert("Hello World!");
+            }
+        }
+        //调用的时候就直接掉options，会合并deafaults 和opts，如果存在相同对象值取靠后的。
+        //所以可以达到覆盖默认参数的效果。
+        var options = $.extend(defaults,opts);
+        options.sayHello();
+    };
+    //调用方式：$("selector").helloCallBack({obj1:"",obj2:"",sayHello:function(){}});
+
+
+    /**
+     * 4.可定制的默认值
      *
      */
+
+
 })(jQuery);
