@@ -146,14 +146,46 @@
         //所以可以达到覆盖默认参数的效果。
         var options = $.extend(defaults,opts);
         options.sayHello();
+
+        //插件逻辑
+        return this.each(function(){
+            options.sayHello();
+        });
     };
     //调用方式：$("selector").helloCallBack({obj1:"",obj2:"",sayHello:function(){}});
 
 
     /**
      * 4.可定制的默认值
-     *
+     *  所谓可定制的默认值，就是可以手动配置默认值后，
+     *  不需要在使用的时候传一堆的大堆的参数过来。
+     *  如何做到可以定制呢？
+     *  通过$.fn.pluginname.deafults={},也就是把默认参数设置成全局变量可以通过命名空间找到并修改他的值的
      */
 
+    $.fn.helloCustomDefaults = function(opts){
+        $.fn.helloCustomDefaults.defaults = {
+            message:"Hello World！"
+        }
+        var options = $.extend({}, $.fn.helloCustomDefaults.defaults,opts);
+
+        //插件逻辑
+        return this.each(function(){
+            var $element = $(this);
+
+        });
+    }
+
+    /**
+     * 四、何为jQuery插件？如何开发一个插件？
+     * 1.何为jQuery插件？
+     *     首先要明白一点，其实jQuery就是一个js插件，通过jQuery可以让我们更好的操作或者渲染HTML元素，
+     * 而jQuery插件其实是扩展jQuery的功能使之满足自己的要求。
+     *
+     * 2.如何开发一个jQuery插件？
+     *     首先你要清楚你的插件是要拿来干什么的?是用来操作HTML元素、渲染HTML元素还是操作和渲染HTML元素呢？
+     *
+     *
+     */
 
 })(jQuery);

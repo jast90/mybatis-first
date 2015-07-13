@@ -7,6 +7,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.*;
@@ -67,6 +68,12 @@ public class ServletInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("*.do");
+
+        /**
+         * 添加shiro的过滤器
+         * DelegatingFilterProxy作用是自动到spring容器查找名字为shiroFilter（filter-name）的bean并把所有Filter的操作委托给它。
+         */
+        registerProxyFilter(servletContext,"shiroFilter");
     }
 
     private AnnotationConfigWebApplicationContext getContext() {
@@ -75,5 +82,11 @@ public class ServletInitializer implements WebApplicationInitializer {
 
         //context.scan(ClassUtils.getPackageName(getClass()));
         return context;
+    }
+
+    private void registerProxyFilter(ServletContext servletContext, String name) {
+        DelegatingFilterProxy filter = new DelegatingFilterProxy(name);
+        filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");
+        servletContext.addFilter(name, filter).addMappingForUrlPatterns(null, false, "/*");
     }
 }
