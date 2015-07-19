@@ -68,7 +68,7 @@ public class AppConfig {
             dataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
 
             //配置监控统计拦截的filters
-            dataSource.setFilters("stat,log4j");
+            dataSource.setFilters("stat");
            // dataSource.setProxyFilters(Arrays.<Filter>asList(log4jFilter));
         } catch (SQLException e) {
             e.printStackTrace();
