@@ -1,8 +1,12 @@
 package org.jast.mybatis.config;
 
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -17,15 +21,26 @@ import java.util.Arrays;
 @EnableWebMvc
 @Configuration
 @ComponentScan({"org.jast.mybatis.*.controller.*"})
-public class MvcConfig  extends WebMvcConfigurerAdapter {
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+public class MvcConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private SecurityManager securityManager;
 
     @Bean
-    public ContentNegotiatingViewResolver contentViewResolver(){
+    public ContentNegotiatingViewResolver contentViewResolver() {
         ContentNegotiatingViewResolver contentViewResolver = new ContentNegotiatingViewResolver();
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/view/");
         viewResolver.setSuffix(".jsp");
         contentViewResolver.setViewResolvers(Arrays.<ViewResolver>asList(viewResolver));
         return contentViewResolver;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 }
