@@ -20,7 +20,7 @@ public class SampleController {
 
     @RequestMapping("/hello")
     public Object String(){
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         list.add("Hello");
         list.add("World");
         return list;

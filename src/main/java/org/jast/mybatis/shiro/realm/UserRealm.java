@@ -14,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by zhiwen on 15-7-16.
  */
 public class UserRealm  extends AuthorizingRealm{
-
-    @Autowired
     private UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {

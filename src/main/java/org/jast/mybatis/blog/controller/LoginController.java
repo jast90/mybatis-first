@@ -14,4 +14,10 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping(value = "unauthorized")
+    public String unauthorized(){
+        return "login";
+    }
+
+
 }

@@ -42,7 +42,7 @@ public class AppConfig {
             //dataSource.setUrl("jdbc:mysql://localhost:3306/mybatis_db");
             dataSource.setUrl("jdbc:mysql://localhost:3306/mybatis_db?useUnicode=true&characterEncoding=utf-8");
             dataSource.setUsername("root");
-            dataSource.setPassword("zzwzzw");
+            dataSource.setPassword("123456");
 
             //配置初始大小
             dataSource.setInitialSize(1);
